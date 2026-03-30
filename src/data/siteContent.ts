@@ -59,7 +59,7 @@ export const siteContent = {
     {
       label: 'Who I am',
       description:
-        "I’m a Computer Science student at Carleton University with a minor in Business. Some things I do for fun are watching anime, lifting, running, and mfor tore recently learning the guitar!",
+        "I’m a Computer Science student at Carleton University with a minor in Business. Some things I do for fun are watching anime, lifting, running, and more recently learning the guitar!",
     },
     {
       label: 'Academic Journey',
