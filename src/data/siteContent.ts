@@ -135,7 +135,7 @@ export const siteContent = {
         'PostgreSQL',
       ],
       image: '/projects/pattern-visualizer.gif',
-      githubUrl: 'https://github.com/your-username/pattern-visualizer',
+      githubUrl: 'https://github.com/mani-kasi/pattern-visualizer',
     },
     {
       title: 'Terrain Amplification Pipeline',
@@ -144,7 +144,7 @@ export const siteContent = {
         'A terrain processing pipeline exploring multi-scale amplification and erosion-style operators on heightfields, with a focus on controllable parameters and visual quality.',
       techStack: ['C++', 'OpenGL'],
       image: '/projects/terrain-pipeline.gif',
-      githubUrl: 'https://github.com/your-username/terrain-amplification-pipeline',
+      githubUrl: 'https://github.com/mani-kasi/Terrain-Amplification-Pipeline',
     },
     {
       title: 'Neurofeedback EEG Simulator',
@@ -153,7 +153,7 @@ export const siteContent = {
         'A neurofeedback EEG device simulator built with C++ and Qt to demonstrate core user flows and real-time brainwave visualization.',
       techStack: ['C++', 'Qt', 'Linux'],
       image: '/projects/eeg-simulator.png',
-      githubUrl: 'https://github.com/your-username/neurofeedback-eeg-simulator',
+      githubUrl: 'https://github.com/mani-kasi/Neureset',
     },
   ] satisfies ProjectItem[],
   contact: {
