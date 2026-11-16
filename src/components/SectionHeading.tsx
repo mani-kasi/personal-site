@@ -1,34 +1,33 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import Reveal from './Reveal'
 
 type SectionHeadingProps = {
+  id: string
   title: string
-  subtitle?: string
+  /** Read by screen readers as part of the title ("Selected" + "Projects"). */
+  srPrefix?: string
+  /** Short supporting line, shown quietly on the right from tablet up. */
+  note?: string
+  tone?: 'light' | 'blue'
 }
 
-function SectionHeading({ title, subtitle }: SectionHeadingProps) {
-  const shouldReduceMotion = useReducedMotion()
+/** A compact heading: blue index number, a bold sentence-case title, and an optional note. */
+function SectionHeading({ id, title, srPrefix, note, tone = 'light' }: SectionHeadingProps) {
+  const onBlue = tone === 'blue'
 
   return (
-    <motion.div
-      className="mb-10 flex flex-col gap-4 md:mb-12"
-      initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
-      whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.45 }}
-      transition={{ duration: 0.55, ease: 'easeOut' }}
-    >
-      <div className="flex items-center gap-4">
-        <span className="h-px flex-1 bg-accent/35" />
-        <h2 className="font-heading text-[clamp(2rem,4vw,3.75rem)] uppercase tracking-[0.08em] text-text">
-          {title}
-        </h2>
-        <span className="h-px flex-1 bg-accent/35" />
+    <Reveal className="mb-8 lg:mb-10">
+      <div className="flex items-baseline justify-between gap-6">
+        <div className="flex items-baseline gap-3 sm:gap-4">
+          <h2 id={id} className="font-display text-3xl font-bold leading-none tracking-[-0.03em] sm:text-4xl">
+            {srPrefix ? <span className="sr-only">{srPrefix} </span> : null}
+            {title}
+          </h2>
+        </div>
+        {note ? (
+          <p className={`hidden text-sm sm:block ${onBlue ? 'text-paper/85' : 'text-ink-soft'}`}>{note}</p>
+        ) : null}
       </div>
-      {subtitle ? (
-        <p className="mx-auto max-w-2xl text-center text-sm leading-7 text-muted sm:text-base">
-          {subtitle}
-        </p>
-      ) : null}
-    </motion.div>
+    </Reveal>
   )
 }
 

@@ -1,111 +1,85 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sigmar+One&display=swap');
 @import 'tailwindcss';
 
-:root {
-  --bg: #0b0713;
-  --bg-soft: #130d20;
-  --card: #181126;
-  --text: #efe9ff;
-  --muted: #b8accf;
-  --accent: #b57cff;
-  --accent-soft: #d8b8ff;
-  --border: rgba(181, 124, 255, 0.18);
-  --glow: rgba(181, 124, 255, 0.22);
-  --shadow-lg:
-    0 24px 60px rgba(2, 0, 12, 0.46),
-    0 0 0 1px rgba(181, 124, 255, 0.12);
+/*
+ * Design tokens.
+ *   paper  cool off-white page
+ *   ink    near-black text
+ *   blue   electric blue: the one accent (primary button, highlights, small details)
+ *   soft   soft blue: image frames, one highlighter, hover tints
+ *   mist   grey for rules and empty-asset placeholders (never for text)
+ *   ink-soft  secondary text on paper (about 5.9:1; the raw #C7C8C1 grey would be about 1.5:1)
+ */
+@theme {
+  --color-paper: #f0f0ec;
+  --color-ink: #17181c;
+  --color-blue: #344dff;
+  --color-soft: #b8c4ff;
+  --color-mist: #c7c8c1;
+  --color-ink-soft: #5b5c62;
+
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Space Grotesk', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 }
 
-@theme inline {
-  --color-bg: var(--bg);
-  --color-bg-soft: var(--bg-soft);
-  --color-card: var(--card);
-  --color-text: var(--text);
-  --color-muted: var(--muted);
-  --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
-  --color-border: var(--border);
-  --color-glow: var(--glow);
-  --font-sans: 'Inter', sans-serif;
-  --font-heading: 'Sigmar One', cursive;
-  --shadow-ambient: var(--shadow-lg);
-}
-
-@keyframes hero-name-shift {
-  0%,
-  100% {
-    background-position: 0% 50%;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-paper);
+    -webkit-text-size-adjust: 100%;
   }
 
-  50% {
-    background-position: 100% 50%;
+  body {
+    margin: 0;
+    min-width: 320px;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--color-blue);
+    color: var(--color-paper);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Visible, high-contrast keyboard focus. Flips to paper on dark and blue bands. */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  [data-tone='dark'] :focus-visible {
+    outline-color: var(--color-paper);
   }
 }
 
-html {
-  scroll-behavior: smooth;
+/* Subtle scroll reveal. Toggled by the Reveal component. */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.7s cubic-bezier(0.2, 0.6, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.6, 0.2, 1);
 }
 
-body {
-  margin: 0;
-  min-width: 320px;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.08;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 168px 168px;
-  mask-image: radial-gradient(circle at center, black, transparent 92%);
-}
-
-#root {
-  min-height: 100vh;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-::selection {
-  background: rgba(181, 124, 255, 0.28);
-  color: var(--text);
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-img {
-  display: block;
-  max-width: 100%;
-}
-
-.hero-name-shift {
-  background-image: linear-gradient(90deg, #fff4fb 0%, #e6c6ff 22%, #ffb8de 46%, #deb8ff 84%, #fff4fb 100%);
-  background-size: 240% 240%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  animation: hero-name-shift 11s ease-in-out infinite;
+.reveal[data-visible='true'] {
+  opacity: 1;
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -113,17 +87,16 @@ img {
     scroll-behavior: auto;
   }
 
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  .hero-name-shift {
-    animation: none;
-    background-position: 0% 50%;
+    animation-duration: 0.01ms !important;
   }
 }

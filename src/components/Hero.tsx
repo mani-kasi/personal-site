@@ -1,96 +1,106 @@
-import { motion, useReducedMotion } from 'framer-motion'
-import TypingText from './TypingText'
-import type { SocialLink } from '../data/siteContent'
+import type { HeroContent } from '../data/siteContent'
+import { isExternal } from '../lib/media'
+import AssetImage from './AssetImage'
 
 type HeroProps = {
-  hero: {
-    greeting: string
-    name: string
-    typingPhrases: string[]
-    profileImage: string
-    email: string
-    socialLinks: SocialLink[]
-  }
+  hero: HeroContent
 }
 
+/**
+ * Compact intro: name and tagline lead on the left, the portrait sits beside them on a
+ * soft-blue offset block, and the supporting copy and links follow underneath.
+ */
 function Hero({ hero }: HeroProps) {
-  const shouldReduceMotion = useReducedMotion()
+  const [greeting, name] = hero.headline
+  const duotone = hero.portrait.treatment === 'duotone'
+  const [tagStart, tagHighlight] = ['I like turning ideas into', 'things people can use.']
 
   return (
-    <section
-      id="home"
-      className="relative overflow-hidden px-4 pb-8 pt-8 sm:px-6 sm:pb-10 sm:pt-9 lg:px-8 lg:pt-12 lg:pb-12"
-    >
-      <div className="mx-auto grid min-h-[calc(100vh-8rem)] w-full max-w-6xl items-center gap-12 lg:grid-cols-[minmax(0,1.02fr)_minmax(360px,0.9fr)]">
-        <motion.div
-          className="relative z-10"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
-          animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
+    <section id="about" aria-labelledby="hero-title" className="scroll-mt-14">
+      <div className="mx-auto grid w-full max-w-[1200px] grid-cols-12 gap-x-6 gap-y-10 px-5 pb-14 pt-10 sm:px-8 lg:gap-x-10 lg:gap-y-8 lg:px-12 lg:pb-20 lg:pt-16">
+        <div className="col-span-12 lg:col-span-7 lg:row-start-1">
+          <p className="mb-5 text-sm text-ink-soft">{hero.eyebrow}</p>
+          <h1 id="hero-title" className="font-display font-bold tracking-[-0.045em]">
+            <span className="block text-2xl leading-none text-ink-soft sm:text-3xl">{greeting}</span>
+            <span className="mt-2 block text-[clamp(3.25rem,9vw,6.25rem)] leading-[0.95]">
+              {name}
+              <span className="text-blue">.</span>
+            </span>
+          </h1>
+          <p className="mt-6 max-w-[22ch] font-display text-[clamp(1.5rem,2.8vw,2.125rem)] font-semibold leading-[1.2] tracking-[-0.025em] sm:max-w-[26ch]">
+            {tagStart}{' '}
+            <span className="box-decoration-clone bg-soft px-1.5 [-webkit-box-decoration-break:clone]">
+              {tagHighlight}
+            </span>
+          </p>
+        </div>
+
+        <aside
+          aria-label="Portrait"
+          className="col-span-8 col-start-1 sm:col-span-5 lg:col-span-4 lg:col-start-9 lg:row-span-2 lg:row-start-1 lg:self-start"
         >
-          <div className="space-y-3">
-            <p className="text-[clamp(1.75rem,3.2vw,2.55rem)] font-medium text-accent-soft">
-              {hero.greeting}
-            </p>
-            <h1 className="hero-name-shift whitespace-nowrap font-heading text-[clamp(2.7rem,6.4vw,5.2rem)] leading-[0.96] tracking-[0.02em]">
-              {hero.name}
-            </h1>
+          <figure className="relative pb-3 pl-3 lg:pb-4 lg:pl-4">
+            <span aria-hidden="true" className="absolute bottom-0 left-0 right-4 top-4 bg-blue lg:right-5 lg:top-5" />
+            <div className="relative isolate aspect-[4/5] overflow-hidden bg-soft">
+              <AssetImage
+                src={hero.portrait.src}
+                alt={hero.portrait.alt}
+                hint={hero.portrait.hint}
+                eager
+                className={duotone ? 'mix-blend-multiply grayscale contrast-125' : ''}
+              />
+            </div>
+          </figure>
+        </aside>
+
+        <div className="col-span-12 lg:col-span-7 lg:row-start-2">
+          <div className="max-w-[36rem] space-y-4 text-base leading-relaxed text-ink/85 sm:text-[1.0625rem]">
+            {hero.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
           </div>
 
-          <div className="mt-6">
-            <TypingText phrases={hero.typingPhrases} />
-          </div>
+          <ul className="mt-6 divide-y divide-ink/15 border-y border-ink/15 text-sm sm:max-w-[28rem]">
+            {hero.affiliations.map((item) => (
+              <li key={item.org} className="flex items-baseline justify-between gap-4 py-2.5">
+                <span className="font-medium">{item.role}</span>
+                <span className="text-ink-soft">{item.org}</span>
+              </li>
+            ))}
+          </ul>
 
-          <div className="mt-10 flex flex-wrap gap-3">
-            {hero.socialLinks.map((link) => {
-              const isEmail = link.href.startsWith('mailto:')
+          <ul className="mt-8 flex flex-wrap gap-3">
+            {hero.links.map((link) => {
+              const external = isExternal(link.href)
+              const opensNewTab = external || link.href.startsWith('/')
+              const primary = link.label === 'Resume'
 
               return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target={isEmail ? undefined : '_blank'}
-                  rel={isEmail ? undefined : 'noreferrer'}
-                  className="inline-flex items-center gap-2 rounded-full border border-border bg-card/75 px-5 py-3 text-sm font-medium text-text transition duration-300 hover:-translate-y-1 hover:border-accent/50 hover:bg-accent/10 hover:text-accent-soft"
-                  aria-label={`Open ${link.label}`}
-                >
-                  <span>{link.label}</span>
-                </a>
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    target={opensNewTab ? '_blank' : undefined}
+                    rel={opensNewTab ? 'noreferrer noopener' : undefined}
+                    className={`inline-flex items-center gap-1.5 border px-4 py-2.5 text-[0.9375rem] font-medium transition-colors ${
+                      primary
+                        ? 'border-blue bg-blue text-paper hover:border-ink hover:bg-ink'
+                        : 'border-ink/30 hover:border-ink hover:bg-ink hover:text-paper'
+                    }`}
+                  >
+                    {link.label}
+                    {opensNewTab ? (
+                      <>
+                        <span aria-hidden="true">↗</span>
+                        <span className="sr-only">(opens in a new tab)</span>
+                      </>
+                    ) : null}
+                  </a>
+                </li>
               )
             })}
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="relative mx-auto flex w-full max-w-xl justify-center lg:justify-end"
-          initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.96, y: 20 }}
-          animate={shouldReduceMotion ? undefined : { opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.75, delay: 0.1, ease: 'easeOut' }}
-        >
-          <div className="relative w-full max-w-[26rem]">
-            <div className="absolute inset-x-8 inset-y-10 rounded-full bg-accent/12 blur-3xl" />
-            <motion.div
-              className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-border/80 bg-bg-soft shadow-[0_28px_60px_rgba(0,0,0,0.45)]"
-              animate={shouldReduceMotion ? undefined : { y: [0, -6, 0], rotate: [-1.2, 0, -1.2] }}
-              transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <img
-                src={hero.profileImage}
-                alt="Portrait of Mani Kasi"
-                className="h-full w-full object-cover object-center"
-              />
-            </motion.div>
-          </div>
-        </motion.div>
+          </ul>
+        </div>
       </div>
-
-      <a
-        href={`mailto:${hero.email}`}
-        className="fixed right-5 top-1/2 hidden -translate-y-1/2 text-xs font-medium tracking-[0.32em] text-muted transition hover:text-accent-soft xl:block"
-        style={{ writingMode: 'vertical-rl' }}
-      >
-        {hero.email}
-      </a>
     </section>
   )
 }

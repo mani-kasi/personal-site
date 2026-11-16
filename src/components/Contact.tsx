@@ -1,53 +1,49 @@
-import { motion, useReducedMotion } from 'framer-motion'
-import { Mail } from 'lucide-react'
+import type { ContactContent } from '../data/siteContent'
+import Reveal from './Reveal'
+import SectionHeading from './SectionHeading'
+import TextLink from './TextLink'
 
 type ContactProps = {
-  contact: {
-    heading: string
-    description: string
-    primaryCta: {
-      label: string
-      href: string
-    }
-  }
+  contact: ContactContent
 }
 
+/** One electric-blue band: a question, a line of context, and the email. */
 function Contact({ contact }: ContactProps) {
-  const shouldReduceMotion = useReducedMotion()
-
   return (
-    <section
-      id="contact"
-      className="scroll-mt-28 px-4 pb-8 pt-12 sm:px-6 sm:pb-10 sm:pt-14 lg:px-8 lg:pb-12 lg:pt-16"
-    >
-      <div className="mx-auto w-full max-w-6xl">
-        <motion.div
-          className="flex flex-col gap-6"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
-          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.35 }}
-          transition={{ duration: 0.55, ease: 'easeOut' }}
-        >
-          <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
-            <div className="flex w-full items-center gap-4">
-              <span className="h-px flex-1 bg-accent/35" />
-              <h2 className="font-heading text-[clamp(2.5rem,5vw,4.25rem)] uppercase tracking-[0.04em] text-text">
-                {contact.heading}
-              </h2>
-              <span className="h-px flex-1 bg-accent/35" />
-            </div>
-            <p className="mt-4 text-base leading-8 text-muted sm:text-lg">
-              {contact.description}
-            </p>
+    <section id="contact" aria-labelledby="contact-title" data-tone="dark" className="scroll-mt-14 bg-blue text-paper">
+      <div className="mx-auto w-full max-w-[1200px] px-5 py-14 sm:px-8 lg:px-12 lg:py-20">
+        <SectionHeading id="contact-title" title="Contact" tone="blue" />
+
+        <Reveal>
+          <p className="max-w-[20ch] font-display text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.05] tracking-[-0.035em] text-balance">
+            {contact.headline}
+          </p>
+        </Reveal>
+
+        <Reveal className="mt-8 grid grid-cols-12 gap-x-6 gap-y-6 lg:mt-10 lg:gap-x-10">
+          <p className="col-span-12 max-w-[26rem] text-base leading-relaxed text-paper/95 lg:col-span-5">
+            {contact.description}
+          </p>
+
+          <div className="col-span-12 lg:col-span-7">
             <a
-              href={contact.primaryCta.href}
-              className="mt-6 inline-flex items-center gap-2 rounded-xl border border-accent/30 bg-accent px-6 py-3 text-sm font-semibold text-bg transition duration-300 hover:-translate-y-1 hover:bg-accent-soft"
+              href={`mailto:${contact.email}`}
+              className="inline-block break-words font-display text-[clamp(1.25rem,2.6vw,2rem)] font-semibold tracking-[-0.025em] underline decoration-paper/50 decoration-1 underline-offset-[6px] transition-colors hover:decoration-paper hover:decoration-2"
             >
-              <Mail size={17} />
-              <span>{contact.primaryCta.label}</span>
+              {contact.email}
             </a>
+
+            <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+              {contact.socialLinks.map((link) => (
+                <li key={link.label}>
+                  <TextLink href={link.href} tone="dark">
+                    {link.label}
+                  </TextLink>
+                </li>
+              ))}
+            </ul>
           </div>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   )

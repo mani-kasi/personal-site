@@ -1,25 +1,16 @@
 import type { ProjectItem } from '../data/siteContent'
-import ProjectCard from './ProjectCard'
-import SectionHeading from './SectionHeading'
-
+import ProjectFeature from './ProjectFeature'
 type ProjectsProps = {
   projects: ProjectItem[]
 }
 
 function Projects({ projects }: ProjectsProps) {
   return (
-    <section
-      id="projects"
-      className="scroll-mt-28 px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28"
-    >
-      <div className="mx-auto w-full max-w-6xl">
-        <SectionHeading
-          title="PROJECTS"
-        />
-
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+    <section id="projects" aria-labelledby="projects-title" className="scroll-mt-14 border-t border-ink/15">
+      <div className="mx-auto w-full max-w-[1200px] px-5 py-14 sm:px-8 lg:px-12 lg:py-20">
+        <div className="space-y-14 lg:space-y-20">
           {projects.map((project, index) => (
-            <ProjectCard key={project.title} project={project} index={index} />
+            <ProjectFeature key={project.title} project={project} flipped={index % 2 === 1} />
           ))}
         </div>
       </div>
