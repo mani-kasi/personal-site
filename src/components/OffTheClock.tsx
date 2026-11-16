@@ -33,7 +33,6 @@ function OffTheClock({ content }: OffTheClockProps) {
                   thumbnail={video.thumbnail}
                   alt="Thumbnail from Mani’s New York City travel montage"
                   label={`Watch “${video.title}”`}
-                  placeholderHint={video.placeholderHint}
                   aspectClass="aspect-video"
                 />
               </div>

@@ -3,14 +3,11 @@ import Reveal from './Reveal'
 type SectionHeadingProps = {
   id: string
   title: string
-  /** Read by screen readers as part of the title ("Selected" + "Projects"). */
   srPrefix?: string
-  /** Short supporting line, shown quietly on the right from tablet up. */
   note?: string
   tone?: 'light' | 'blue'
 }
 
-/** A compact heading: blue index number, a bold sentence-case title, and an optional note. */
 function SectionHeading({ id, title, srPrefix, note, tone = 'light' }: SectionHeadingProps) {
   const onBlue = tone === 'blue'
 

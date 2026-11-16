@@ -2,15 +2,12 @@ import type { ReactNode } from 'react'
 import { isExternal } from '../lib/media'
 
 type TextLinkProps = {
-  /** Empty or undefined renders a clearly marked "link pending" state instead of a dead link. */
   href?: string
   children: ReactNode
-  /** light = on paper, dark = on electric blue */
   tone?: 'light' | 'dark'
   className?: string
 }
 
-/** A plain medium-weight link with an arrow. It underlines on hover and keyboard focus. */
 function TextLink({ href, children, tone = 'light', className = '' }: TextLinkProps) {
   const base = 'inline-flex items-baseline gap-1.5 text-[0.9375rem] font-medium'
   const dark = tone === 'dark'

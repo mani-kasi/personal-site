@@ -2,21 +2,15 @@ import { useState } from 'react'
 
 type AssetImageProps = {
   src?: string
-  /** Tried if `src` fails to load (e.g. YouTube max-res thumbnails don't always exist). */
   fallbackSrc?: string
   alt: string
-  /** Shown inside the placeholder when no image can be loaded: say what to add and where. */
-  hint: string
   tone?: 'light' | 'dark'
   eager?: boolean
   className?: string
 }
 
-/**
- * An <img> that degrades into an intentional, clearly labelled placeholder
- * if the file is missing — so unfinished assets never show a broken-image icon.
- */
-function AssetImage({ src, fallbackSrc, alt, hint, tone = 'light', eager = false, className = '' }: AssetImageProps) {
+
+function AssetImage({ src, fallbackSrc, alt, tone = 'light', eager = false, className = '' }: AssetImageProps) {
   const [failed, setFailed] = useState<string[]>([])
   const current = [src, fallbackSrc].find(
     (candidate): candidate is string => !!candidate && !failed.includes(candidate),
@@ -43,7 +37,6 @@ function AssetImage({ src, fallbackSrc, alt, hint, tone = 'light', eager = false
         <span className="relative self-start bg-blue px-2 py-1 font-mono text-[11px] font-medium text-paper">
           Asset placeholder
         </span>
-        <span className="relative max-w-[36ch] font-mono text-[11px] leading-relaxed sm:text-xs">{hint}</span>
       </div>
     )
   }

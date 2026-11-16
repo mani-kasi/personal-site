@@ -1,5 +1,4 @@
 import type { ProjectItem } from '../data/siteContent'
-import AssetImage from './AssetImage'
 import Reveal from './Reveal'
 import SlashList from './SlashList'
 import TextLink from './TextLink'
@@ -7,7 +6,6 @@ import VideoThumb from './VideoThumb'
 
 type ProjectFeatureProps = {
   project: ProjectItem
-  /** Alternates the image to the right on desktop. */
   flipped?: boolean
 }
 
@@ -17,7 +15,6 @@ const ratioClass: Record<ProjectItem['media']['ratio'], string> = {
   '16/9': 'aspect-video',
 }
 
-/** Image and text side by side on desktop, alternating left and right; stacked on mobile. */
 function ProjectFeature({ project, flipped = false }: ProjectFeatureProps) {
   const { media } = project
   const isProcess = project.tagsLabel === 'Process'
@@ -37,12 +34,10 @@ function ProjectFeature({ project, flipped = false }: ProjectFeatureProps) {
                   href={media.play.href}
                   alt={media.alt}
                   label={media.play.label}
-                  placeholderHint={media.placeholderHint}
                   aspectClass="aspect-video"
                 />
               ) : (
                 <div className={`h-full w-full ${ratioClass[media.ratio]}`}>
-                  <AssetImage src={media.src} alt={media.alt} hint={media.placeholderHint} tone="dark" />
                 </div>
               )}
             </div>

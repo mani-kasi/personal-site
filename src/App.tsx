@@ -26,7 +26,7 @@ function App() {
 
       <main id="main" tabIndex={-1} className="outline-none">
         <Hero hero={siteContent.hero} />
-        <Experience experiences={siteContent.experienceItems} technologiesLine={siteContent.technologiesLine} />
+        <Experience experiences={siteContent.experienceItems} />
         <Projects projects={siteContent.projectItems} />
         <OffTheClock content={siteContent.offTheClock} />
         <Contact contact={siteContent.contact} />

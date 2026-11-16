@@ -2,12 +2,10 @@ import { Fragment } from 'react'
 
 type SlashListProps = {
   items: string[]
-  /** Colour class for the separators. */
   slash?: string
   separator?: '/' | '·' | '→'
 }
 
-/** Inline list with quiet separators, e.g. "Android · Kotlin · Software Development". */
 function SlashList({ items, slash = 'text-ink-soft', separator = '·' }: SlashListProps) {
   return (
     <>

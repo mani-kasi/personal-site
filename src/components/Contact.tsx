@@ -7,7 +7,6 @@ type ContactProps = {
   contact: ContactContent
 }
 
-/** One electric-blue band: a question, a line of context, and the email. */
 function Contact({ contact }: ContactProps) {
   return (
     <section id="contact" aria-labelledby="contact-title" data-tone="dark" className="scroll-mt-14 bg-blue text-paper">

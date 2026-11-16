@@ -5,11 +5,7 @@ type RevealProps = {
   className?: string
 }
 
-/**
- * Fades and lifts its children in once, the first time they scroll into view.
- * Uses a direct DOM attribute (no React state) so it never causes re-renders.
- * Reduced-motion users get the content immediately via CSS.
- */
+
 function Reveal({ children, className = '' }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null)
 

@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import AssetImage from './AssetImage'
 import { isExternal, youtubeId, youtubeThumbnails } from '../lib/media'
 
 type VideoThumbProps = {
@@ -7,7 +6,6 @@ type VideoThumbProps = {
   thumbnail?: string
   alt: string
   label: string
-  placeholderHint: string
   aspectClass: string
 }
 
@@ -21,7 +19,7 @@ function PlayButton() {
   )
 }
 
-function VideoThumb({ href, thumbnail, alt, label, placeholderHint, aspectClass }: VideoThumbProps) {
+function VideoThumb({ href, thumbnail, alt, label, aspectClass }: VideoThumbProps) {
   const [playing, setPlaying] = useState(false)
   const id = youtubeId(href)
   const derived = youtubeThumbnails(href)
@@ -46,7 +44,6 @@ function VideoThumb({ href, thumbnail, alt, label, placeholderHint, aspectClass 
   const inner = (
     <div className={`relative overflow-hidden bg-ink ${aspectClass}`}>
       <div className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-[1.03]">
-        <AssetImage src={src} fallbackSrc={fallbackSrc} alt={alt} hint={placeholderHint} tone="dark" />
       </div>
       <div className="absolute inset-0 grid place-items-center bg-ink/10 transition-colors duration-200 group-hover:bg-ink/25">
         <PlayButton />

@@ -6,10 +6,7 @@ type HeroProps = {
   hero: HeroContent
 }
 
-/**
- * Compact intro: name and tagline lead on the left, the portrait sits beside them on a
- * soft-blue offset block, and the supporting copy and links follow underneath.
- */
+
 function Hero({ hero }: HeroProps) {
   const [greeting, name] = hero.headline
   const duotone = hero.portrait.treatment === 'duotone'
@@ -45,7 +42,6 @@ function Hero({ hero }: HeroProps) {
               <AssetImage
                 src={hero.portrait.src}
                 alt={hero.portrait.alt}
-                hint={hero.portrait.hint}
                 eager
                 className={duotone ? 'mix-blend-multiply grayscale contrast-125' : ''}
               />

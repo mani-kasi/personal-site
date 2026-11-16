@@ -1,5 +1,4 @@
 import type { ExperienceItem } from '../data/siteContent'
-import Reveal from './Reveal'
 import SectionHeading from './SectionHeading'
 import SlashList from './SlashList'
 
@@ -7,7 +6,6 @@ type ExperienceProps = {
   experiences: ExperienceItem[]
 }
 
-/** One row layout for every role, so no company outranks another. */
 function ExperienceRow({ item }: { item: ExperienceItem }) {
   return (
     <li className="border-t border-ink/15 py-6 first:border-t-0 first:pt-0 lg:py-7">
