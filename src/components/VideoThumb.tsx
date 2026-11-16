@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { isExternal, youtubeId, youtubeThumbnails } from '../lib/media'
+import { isExternal, youtubeId } from '../lib/media'
 
 type VideoThumbProps = {
   href?: string
@@ -19,13 +19,9 @@ function PlayButton() {
   )
 }
 
-function VideoThumb({ href, thumbnail, alt, label, aspectClass }: VideoThumbProps) {
+function VideoThumb({ href, label, aspectClass }: VideoThumbProps) {
   const [playing, setPlaying] = useState(false)
   const id = youtubeId(href)
-  const derived = youtubeThumbnails(href)
-  const src = thumbnail ?? derived.src
-  const fallbackSrc = thumbnail ? undefined : derived.fallbackSrc
-
   // Embedded player (YouTube links only)
   if (id && playing) {
     return (
