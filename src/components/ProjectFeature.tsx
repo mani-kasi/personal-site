@@ -36,8 +36,14 @@ function ProjectFeature({ project, flipped = false }: ProjectFeatureProps) {
                   label={media.play.label}
                   aspectClass="aspect-video"
                 />
-              ) : (
+               ) : (
                 <div className={`h-full w-full ${ratioClass[media.ratio]}`}>
+                  <img
+                    src={media.src}
+                    alt={media.alt}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
               )}
             </div>
