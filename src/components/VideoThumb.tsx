@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { isExternal, youtubeId } from '../lib/media'
+import { isExternal, youtubeId, youtubeThumbnails } from '../lib/media'
 
 type VideoThumbProps = {
   href?: string
@@ -19,10 +19,19 @@ function PlayButton() {
   )
 }
 
-function VideoThumb({ href, label, aspectClass }: VideoThumbProps) {
+function VideoThumb({ href, thumbnail, alt, label, aspectClass }: VideoThumbProps) {
   const [playing, setPlaying] = useState(false)
+  const [failedThumbnails, setFailedThumbnails] = useState<string[]>([])
   const id = youtubeId(href)
-  // Embedded player (YouTube links only)
+  const youtubeThumbnail = youtubeThumbnails(href)
+  const thumbnailSources = [
+    thumbnail,
+    youtubeThumbnail.src,
+    youtubeThumbnail.fallbackSrc,
+  ].filter((source, index, sources): source is string =>
+    !!source && sources.indexOf(source) === index && !failedThumbnails.includes(source),
+  )
+
   if (id && playing) {
     return (
       <div className={`relative overflow-hidden bg-ink ${aspectClass}`}>
@@ -40,6 +49,16 @@ function VideoThumb({ href, label, aspectClass }: VideoThumbProps) {
   const inner = (
     <div className={`relative overflow-hidden bg-ink ${aspectClass}`}>
       <div className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-[1.03]">
+        {thumbnailSources[0] ? (
+          <img
+            src={thumbnailSources[0]}
+            alt={alt}
+            loading="lazy"
+            decoding="async"
+            onError={() => setFailedThumbnails((previous) => [...previous, thumbnailSources[0]])}
+            className="h-full w-full object-cover"
+          />
+        ) : null}
       </div>
       <div className="absolute inset-0 grid place-items-center bg-ink/10 transition-colors duration-200 group-hover:bg-ink/25">
         <PlayButton />
